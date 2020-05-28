@@ -1,6 +1,6 @@
 def dockeruser = "cataq"
-def imagename = "ubuntu:16.04"
-def container = "apache2"
+def imagename = "openjdk:8"
+def container = "helloteam"
 node {
    echo 'Building Apache Docker Image'
 
@@ -21,18 +21,16 @@ stage('Remove Existing Container'){
     }
     
 stage ('Runing Container to test built Docker Image'){
-    powershell "docker run -dit --name ${container} -p 80:80 ${imagename}"
+    powershell "docker run -dit --name ${container} -p 8030:80 ${imagename}"
     }
-    
-stage('Tag Docker Image'){
-    powershell "docker tag ${imagename} ${env.dockeruser}/ubuntu:16.04"
+   stage('Tag Docker Image'){
+    powershell "docker tag ${imagename} ${env.dockeruser}/helloteam"
     }
 
 stage('Docker Login and Push Image'){
     withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', passwordVariable: 'dockerpasswd', usernameVariable: 'dockeruser')]) {
     powershell "docker login -u ${dockeruser} -p ${dockerpasswd}"
     }
-    powershell "docker push ${dockeruser}/ubuntu:16.04"
+    powershell "docker push ${dockeruser}/helloteam"
     }
-
 }
