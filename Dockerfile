@@ -1,12 +1,10 @@
 # Source Image name
-from ubuntu:16.04
-# Mainter Name
-maintainer Amar Singh
-# Command to update and install Apache packages
-RUN apt-get update && apt-get install apache2 -y
+FROM openjdk:8
+# Add HelloWorld.jar
+ADD HelloWorld/target/HelloWorld-0.0.1-SNAPSHOT.jar HelloWorld.jar
 # open port 
-EXPOSE 80
+EXPOSE 8080
 # Command to run Apache server in background
-CMD /usr/sbin/apache2ctl -D FOREGROUND
+CMD ["java" "-jar" "/HelloWorld.jar"]
 
 
